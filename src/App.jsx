@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider, useNavigate, Outlet } from 'react-router'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
+import { HomePage, LoginPage } from './pages'
 
 // Layout component to provide navigate function to all routes
 function Layout() {

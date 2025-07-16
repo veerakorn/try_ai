@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
+import DatePicker from '../components/DatePicker'
 
 function LoginPage() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    birthDate: null
   })
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
@@ -24,6 +26,20 @@ function LoginPage() {
       setErrors(prev => ({
         ...prev,
         [name]: ''
+      }))
+    }
+  }
+
+  const handleDateSelect = (date) => {
+    setFormData(prev => ({
+      ...prev,
+      birthDate: date
+    }))
+    // Clear birth date error if exists
+    if (errors.birthDate) {
+      setErrors(prev => ({
+        ...prev,
+        birthDate: ''
       }))
     }
   }
@@ -174,6 +190,33 @@ function LoginPage() {
               {errors.password && (
                 <p className="text-error text-xs mt-1 animate-pulse">
                   {errors.password}
+                </p>
+              )}
+            </div>
+
+            {/* Birth Date Field */}
+            <div>
+              <label className="block text-neutral-200 text-sm font-medium mb-2">
+                วันเกิด (ไม่บังคับ)
+              </label>
+              <div className="relative">
+                <DatePicker
+                  placeholder="เลือกวันเกิดของคุณ"
+                  onDateSelect={handleDateSelect}
+                  className="w-full bg-neutral-700/50 border border-neutral-600 focus:border-web-green-500 text-white placeholder-neutral-400"
+                />
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  <span className="text-neutral-400">📅</span>
+                </div>
+              </div>
+              {formData.birthDate && (
+                <p className="text-web-green-400 text-xs mt-1 animate-pulse">
+                  วันเกิด: {formData.birthDate.toLocaleDateString('th-TH')}
+                </p>
+              )}
+              {errors.birthDate && (
+                <p className="text-error text-xs mt-1 animate-pulse">
+                  {errors.birthDate}
                 </p>
               )}
             </div>
