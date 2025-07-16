@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 function Login() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -9,7 +10,6 @@ function Login() {
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -185,12 +185,12 @@ function Login() {
                 />
                 <span className="ml-2">จดจำฉันไว้</span>
               </label>
-              <Link 
-                to="/forgot-password" 
+              <button
+                onClick={() => navigate('/forgot-password')}
                 className="text-web-green-400 hover:text-web-green-300 transition-colors"
               >
                 ลืมรหัสผ่าน?
-              </Link>
+              </button>
             </div>
 
             {/* Submit Error */}
@@ -253,12 +253,12 @@ function Login() {
             {/* Sign Up Link */}
             <div className="text-center text-sm">
               <span className="text-neutral-400">ยังไม่มีบัญชี? </span>
-              <Link 
-                to="/register" 
+              <button
+                onClick={() => navigate('/register')}
                 className="text-web-green-400 hover:text-web-green-300 transition-colors font-medium"
               >
                 สมัครสมาชิก
-              </Link>
+              </button>
             </div>
 
           </form>
@@ -266,13 +266,13 @@ function Login() {
 
         {/* Back to Home */}
         <div className="text-center mt-6">
-          <Link 
-            to="/" 
+          <button
+            onClick={() => navigate('/')}
             className="inline-flex items-center text-neutral-400 hover:text-web-green-400 transition-colors"
           >
             <span className="mr-2">←</span>
             กลับสู่หน้าหลัก
-          </Link>
+          </button>
         </div>
       </div>
     </div>

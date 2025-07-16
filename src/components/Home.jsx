@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 function Home() {
+  const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -158,12 +159,12 @@ function Home() {
 
       {/* Navigation */}
       <nav className="absolute top-8 left-8 z-30">
-        <Link 
-          to="/login" 
+        <button
+          onClick={() => navigate('/login')}
           className="bg-neutral-800/50 backdrop-blur-sm text-web-green-100 px-6 py-3 rounded-full hover:bg-neutral-700/50 transition-all duration-300 hover:scale-105 border border-web-green-500/20 hover:border-web-green-400/40"
         >
           🔐 เข้าสู่ระบบ
-        </Link>
+        </button>
       </nav>
 
       {/* Main content */}
@@ -239,13 +240,13 @@ function Home() {
 
           {/* Interactive buttons */}
           <div className="space-y-4 mb-12">
-            <Link
-              to="/login"
+            <button
+              onClick={() => navigate('/login')}
               className="group relative inline-block bg-gradient-to-r from-web-green-600 to-web-green-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-web-green-500/50 active:scale-95 overflow-hidden border border-web-green-400/20"
             >
               <span className="relative z-10">🎉 เริ่มการผจญภัย</span>
               <div className="absolute inset-0 bg-gradient-to-r from-web-green-500 to-web-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </Link>
+            </button>
             
             <div className="flex justify-center space-x-4">
               <button className="bg-neutral-800/50 backdrop-blur-sm text-web-green-100 px-6 py-3 rounded-full hover:bg-neutral-700/50 transition-all duration-300 hover:scale-105 border border-web-green-500/20 hover:border-web-green-400/40">
