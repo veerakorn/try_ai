@@ -1,76 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import Navigation from '../components/Navigation'
+import DigitalClock from '../components/DigitalClock'
+import ParticleSystem from '../components/ParticleSystem'
+import TypewriterEffect from '../components/TypewriterEffect'
+import Button from '../components/ui/Button'
 
-function Home() {
+function HomePage() {
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [particles, setParticles] = useState([])
-  const [helloIndex, setHelloIndex] = useState(0)
-  const [worldIndex, setWorldIndex] = useState(0)
-
-  const helloText = "Hello"
-  const worldText = "World"
 
   // เริ่มแสดง animation หลังจาก component mount
   useEffect(() => {
     setTimeout(() => setIsVisible(true), 100)
-    
-    // Update time every second
-    const timeInterval = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
-    // Generate particles
-    const particleArray = Array.from({ length: 50 }, (_, i) => ({
-      id: i,
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 1,
-      speedX: (Math.random() - 0.5) * 2,
-      speedY: (Math.random() - 0.5) * 2,
-      color: ['rgb(var(--color-web-green-400))', 'rgb(var(--color-web-green-500))', 'rgb(var(--color-info))', 'rgb(var(--color-warning))', 'rgb(var(--color-success))'][Math.floor(Math.random() * 5)]
-    }))
-    setParticles(particleArray)
-
-    // Animate particles
-    const particleInterval = setInterval(() => {
-      setParticles(prev => prev.map(particle => {
-        let newX = particle.x + particle.speedX
-        let newY = particle.y + particle.speedY
-        
-        // Wrap around screen edges
-        if (newX > window.innerWidth) newX = 0
-        if (newX < 0) newX = window.innerWidth
-        if (newY > window.innerHeight) newY = 0
-        if (newY < 0) newY = window.innerHeight
-        
-        return {
-          ...particle,
-          x: newX,
-          y: newY
-        }
-      }))
-    }, 50)
-
-    // Typewriter effect
-    const helloInterval = setInterval(() => {
-      setHelloIndex(prev => prev < helloText.length ? prev + 1 : prev)
-    }, 200)
-
-    setTimeout(() => {
-      const worldInterval = setInterval(() => {
-        setWorldIndex(prev => prev < worldText.length ? prev + 1 : prev)
-      }, 150)
-      return () => clearInterval(worldInterval)
-    }, 1500)
-
-    return () => {
-      clearInterval(timeInterval)
-      clearInterval(particleInterval)
-      clearInterval(helloInterval)
-    }
   }, [])
 
   // Track mouse movement
@@ -119,20 +62,7 @@ function Home() {
       />
 
       {/* Floating particles */}
-      {particles.map(particle => (
-        <div
-          key={particle.id}
-          className="absolute rounded-full opacity-70 animate-pulse"
-          style={{
-            left: particle.x,
-            top: particle.y,
-            width: particle.size,
-            height: particle.size,
-            backgroundColor: particle.color,
-            boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`
-          }}
-        />
-      ))}
+      <ParticleSystem />
 
       {/* Animated background elements */}
       <div className="absolute inset-0">
@@ -158,48 +88,33 @@ function Home() {
       />
 
       {/* Navigation */}
-      <nav className="absolute top-8 left-8 z-30">
-        <button
-          onClick={() => navigate('/login')}
-          className="bg-neutral-800/50 backdrop-blur-sm text-web-green-100 px-6 py-3 rounded-full hover:bg-neutral-700/50 transition-all duration-300 hover:scale-105 border border-web-green-500/20 hover:border-web-green-400/40"
-        >
-          🔐 เข้าสู่ระบบ
-        </button>
-      </nav>
+      <Navigation />
 
       {/* Main content */}
       <div className="relative z-20 min-h-screen flex flex-col items-center justify-center text-center px-4">
         
         {/* Digital clock */}
-        <div className="absolute top-8 right-8 bg-neutral-800/50 backdrop-blur-sm rounded-lg px-4 py-2 text-web-green-100 font-mono text-sm border border-web-green-500/20 shadow-lg">
-          {currentTime.toLocaleTimeString('th-TH')}
-        </div>
+        <DigitalClock />
 
         {/* Main title with typewriter effect */}
         <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
           
           {/* Hello text with glow effect */}
           <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-bold mb-4 relative">
-            <span className="bg-gradient-to-r from-web-green-400 via-web-green-500 to-web-green-600 bg-clip-text text-transparent animate-pulse drop-shadow-2xl"
-              style={{ 
-                textShadow: '0 0 30px rgb(var(--color-web-green-500) / 0.5), 0 0 60px rgb(var(--color-web-green-400) / 0.3)',
-                filter: 'drop-shadow(0 0 20px rgb(var(--color-web-green-500) / 0.8))'
-              }}>
-              {helloText.slice(0, helloIndex)}
-              <span className="animate-ping text-web-green-400">|</span>
-            </span>
+            <TypewriterEffect 
+              text="Hello"
+              delay={200}
+              className="bg-gradient-to-r from-web-green-400 via-web-green-500 to-web-green-600 bg-clip-text text-transparent animate-pulse drop-shadow-2xl"
+            />
           </h1>
 
           {/* World text with different animation */}
           <h2 className="text-6xl md:text-7xl lg:text-8xl font-light mb-8 relative">
-            <span className="bg-gradient-to-r from-web-green-300 via-success to-web-green-600 bg-clip-text text-transparent"
-              style={{ 
-                textShadow: '0 0 30px rgb(var(--color-web-green-400) / 0.5)',
-                filter: 'drop-shadow(0 0 15px rgb(var(--color-web-green-400) / 0.6))'
-              }}>
-              {worldText.slice(0, worldIndex)}
-              {worldIndex < worldText.length && <span className="animate-pulse text-web-green-300">|</span>}
-            </span>
+            <TypewriterEffect 
+              text="World"
+              delay={150}
+              className="bg-gradient-to-r from-web-green-300 via-success to-web-green-600 bg-clip-text text-transparent"
+            />
           </h2>
 
           {/* Subtitle with wave animation */}
@@ -240,21 +155,21 @@ function Home() {
 
           {/* Interactive buttons */}
           <div className="space-y-4 mb-12">
-            <button
+            <Button
+              size="lg"
               onClick={() => navigate('/login')}
-              className="group relative inline-block bg-gradient-to-r from-web-green-600 to-web-green-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-web-green-500/50 active:scale-95 overflow-hidden border border-web-green-400/20"
+              className="group relative overflow-hidden"
             >
               <span className="relative z-10">🎉 เริ่มการผจญภัย</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-web-green-500 to-web-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
+            </Button>
             
             <div className="flex justify-center space-x-4">
-              <button className="bg-neutral-800/50 backdrop-blur-sm text-web-green-100 px-6 py-3 rounded-full hover:bg-neutral-700/50 transition-all duration-300 hover:scale-105 border border-web-green-500/20 hover:border-web-green-400/40">
+              <Button variant="secondary">
                 📖 เรียนรู้เพิ่มเติม
-              </button>
-              <button className="bg-neutral-800/50 backdrop-blur-sm text-web-green-100 px-6 py-3 rounded-full hover:bg-neutral-700/50 transition-all duration-300 hover:scale-105 border border-web-green-500/20 hover:border-web-green-400/40">
+              </Button>
+              <Button variant="secondary">
                 💼 Portfolio
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -298,4 +213,4 @@ function Home() {
   )
 }
 
-export default Home
+export default HomePage

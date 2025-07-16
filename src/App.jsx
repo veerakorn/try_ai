@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider, useNavigate, Outlet } from 'react-router'
-import Home from './components/Home'
-import Login from './components/Login'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 
 // Layout component to provide navigate function to all routes
 function Layout() {
@@ -17,11 +17,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <HomePage />
       },
       {
         path: "login",
-        element: <Login />
+        element: <LoginPage />
       }
     ]
   }

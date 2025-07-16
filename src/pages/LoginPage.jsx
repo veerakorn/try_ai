@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import Button from '../components/ui/Button'
+import Input from '../components/ui/Input'
 
-function Login() {
+function LoginPage() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
@@ -279,4 +281,4 @@ function Login() {
   )
 }
 
-export default Login
+export default LoginPage
